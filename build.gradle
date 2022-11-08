@@ -8,3 +8,15 @@ plugins {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    gson_version = "2.10"
+    koin_version = "3.2.2"
+    koin_android_version = "3.3.0"
+    retrofit_version = "2.9.0"
+    okHttp_version = "4.10.0"
+    lifecycle_version = "2.5.1"
+    glide_version = "4.14.2"
+    timber_version = "5.0.1"
+    coroutines_version = "1.6.1"
+}
