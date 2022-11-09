@@ -2,9 +2,10 @@ package com.example.android_chipsampleapp.di
 
 import com.example.android_chipsampleapp.network.Api
 import com.example.android_chipsampleapp.network.Repository
+import com.example.android_chipsampleapp.ui.breed_list.BreedListViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.BuildConfig
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -35,9 +36,9 @@ val networkModule = module {
             .readTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
 
-        if (BuildConfig.DEBUG) {
+        //if (BuildConfig.DEBUG) {
             client.addInterceptor(get<HttpLoggingInterceptor>())
-        }
+        //}
         client.build()
     }
 
@@ -57,4 +58,5 @@ val networkModule = module {
 
 val viewModelModule = module {
     single { Repository(get()) }
+    viewModel { BreedListViewModel(get()) }
 }

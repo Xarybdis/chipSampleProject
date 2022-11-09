@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/breedListFragment">
+
+    <fragment
+        android:id="@+id/breedListFragment"
+        android:name="com.example.android_chipsampleapp.ui.breed_list.BreedListFragment"
+        android:label="Breeds List">
+        <action
+            android:id="@+id/action_breedListFragment_to_breedDetailFragment"
+            app:destination="@id/breedDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/breedDetailFragment"
+        android:name="com.example.android_chipsampleapp.ui.breed_detail.BreedDetailFragment"
+        android:label="{title}">
+        <argument
+            android:name="breedName"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
+            android:name="title"
+            android:defaultValue="Breed Images"
+            app:argType="string" />
+    </fragment>
+</navigation>

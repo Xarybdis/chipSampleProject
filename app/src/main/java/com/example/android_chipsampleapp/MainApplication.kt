@@ -1,7 +1,8 @@
 package com.example.android_chipsampleapp
 
 import android.app.Application
-import org.koin.android.BuildConfig
+import com.example.android_chipsampleapp.di.networkModule
+import com.example.android_chipsampleapp.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -14,11 +15,10 @@ class MainApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@MainApplication)
-            modules()
+            modules(networkModule, viewModelModule)
         }
 
-        if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
-        }
+
     }
 }
