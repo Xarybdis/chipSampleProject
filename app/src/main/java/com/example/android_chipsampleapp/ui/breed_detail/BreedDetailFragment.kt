@@ -8,6 +8,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.android_chipsampleapp.R
 import com.example.android_chipsampleapp.databinding.FragmentBreedDetailBinding
 import com.example.android_chipsampleapp.network.models.Response
+import com.example.android_chipsampleapp.utils.stateProgressLoading
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -54,13 +56,17 @@ class BreedDetailFragment : Fragment(R.layout.fragment_breed_detail), BreedDetai
             it?.let { response ->
                 when (response) {
                     is Response.Success -> {
+                        stateProgressLoading(false, binding.loadingView.root, binding.recyclerviewBreedDetail)
                         updateBreedImageRecyclerView(response.data)
                     }
                     is Response.Error -> {
                         Timber.d("An error occurred during fetchImages()")
+                        Snackbar.make(requireView(), "An error occurred. Check your internet.", Snackbar.ANIMATION_MODE_SLIDE).setAction("TRY AGAIN") {
+                            fetchImages(breedName, subBreedName)
+                        }.show()
                     }
                     is Response.Loading -> {
-                        //TODO Loading will be implemented
+                        stateProgressLoading(true, binding.loadingView.root, binding.recyclerviewBreedDetail)
                     }
                 }
             }

@@ -9,4 +9,20 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="rv_imagelist_bg">#e0e0e0</color>
+    <color name="loading_progress_color">#5e35b1</color>
+    <color name="deep_purple3">#512da8</color>
+    <color name="deep_purple4">#4527a0</color>
+    <color name="deep_purple5">#311b92</color>
+
+    <color name="indigo2">#3949ab</color>
+    <color name="indigo3">#303f9f</color>
+    <color name="indigo4">#283593</color>
+    <color name="indigo5">#1a237e</color>
+
+    <color name="gray2">#757575</color>
+    <color name="gray3">#616161</color>
+    <color name="gray4">#424242</color>
+    <color name="gray5">#212121</color>
+
+
 </resources>

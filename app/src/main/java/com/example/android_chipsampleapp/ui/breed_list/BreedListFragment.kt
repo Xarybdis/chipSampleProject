@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.android_chipsampleapp.R
 import com.example.android_chipsampleapp.databinding.FragmentBreedListBinding
 import com.example.android_chipsampleapp.network.models.Response
+import com.example.android_chipsampleapp.utils.stateProgressLoading
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -58,12 +60,18 @@ class BreedListFragment : Fragment(R.layout.fragment_breed_list), BreedListAdapt
             it?.let { response ->
                 when (response) {
                     is Response.Success -> {
+                        stateProgressLoading(false, binding.loadingView.root, binding.recyclerviewList)
                         updateBreedListRecyclerView(response.data)
                     }
                     is Response.Error -> {
                         Timber.d("An error occurred during fetchBreedsList()")
+                        Snackbar.make(requireView(), "An error occurred. Check your internet.", Snackbar.LENGTH_INDEFINITE).setAction("TRY AGAIN") {
+                            fetchBreedsList()
+                        }.show()
                     }
-                    is Response.Loading -> Timber.d("ITS LOADINGGGGG")
+                    is Response.Loading -> {
+                        stateProgressLoading(true, binding.loadingView.root, binding.recyclerviewList)
+                    }
                 }
             }
         }
