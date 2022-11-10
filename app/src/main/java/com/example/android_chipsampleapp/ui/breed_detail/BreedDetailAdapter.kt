@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.android_chipsampleapp.databinding.ListItemBreedImageBinding
 
-class BreedDetailAdapter(private val context: Context) : RecyclerView.Adapter<BreedDetailAdapter.BreedDetailViewHolder>() {
+class BreedDetailAdapter(private val context: Context, private val listener: OnItemClickListener) : RecyclerView.Adapter<BreedDetailAdapter.BreedDetailViewHolder>() {
     private val breedImageList = mutableListOf<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreedDetailViewHolder =
@@ -25,9 +25,21 @@ class BreedDetailAdapter(private val context: Context) : RecyclerView.Adapter<Br
         notifyDataSetChanged()
     }
 
+    interface OnItemClickListener {
+        fun breedImageItemClick(breedImageUrl: String)
+    }
+
     inner class BreedDetailViewHolder(private val itemBinding: ListItemBreedImageBinding) : RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(breedImageUrl: String) {
-            Glide.with(context).load(breedImageUrl).into(itemBinding.imageviewDetail)
+            itemBinding.apply {
+                Glide.with(context).load(breedImageUrl).into(imageviewDetail)
+
+                root.setOnClickListener {
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
+                        listener.breedImageItemClick(breedImageUrl)
+                    }
+                }
+            }
         }
     }
 }

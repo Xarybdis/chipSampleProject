@@ -3,13 +3,15 @@ package com.example.android_chipsampleapp.ui.breed_detail
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.android_chipsampleapp.R
 import com.example.android_chipsampleapp.databinding.FragmentBreedDetailBinding
 import com.example.android_chipsampleapp.network.models.Response
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class BreedDetailFragment: Fragment(R.layout.fragment_breed_detail) {
+class BreedDetailFragment : Fragment(R.layout.fragment_breed_detail), BreedDetailAdapter.OnItemClickListener {
     private var breedName = ""
     private var subBreedName = ""
     private val viewModel: BreedDetailViewModel by viewModel()
@@ -21,7 +23,7 @@ class BreedDetailFragment: Fragment(R.layout.fragment_breed_detail) {
         binding = FragmentBreedDetailBinding.bind(view)
         breedName = arguments?.getString("breedName").toString()
         subBreedName = arguments?.getString("subBreedName").toString()
-        breedDetailAdapter = BreedDetailAdapter(requireContext())
+        breedDetailAdapter = BreedDetailAdapter(requireContext(), this)
 
         setupViews()
         fetchImages(breedName, subBreedName)
@@ -32,6 +34,17 @@ class BreedDetailFragment: Fragment(R.layout.fragment_breed_detail) {
             recyclerviewBreedDetail.apply {
                 adapter = breedDetailAdapter
                 setHasFixedSize(true)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.breedDetailEvent.collect { event ->
+                when (event) {
+                    is BreedDetailViewModel.BreedDetailEvent.NavigateToBreedStandaloneImageScreen -> {
+                        val action = BreedDetailFragmentDirections.actionBreedDetailFragmentToStandAloneImageFragment(event.breedImageUrl)
+                        findNavController().navigate(action)
+                    }
+                }
             }
         }
     }
@@ -56,6 +69,10 @@ class BreedDetailFragment: Fragment(R.layout.fragment_breed_detail) {
 
     private fun updateBreedImageRecyclerView(data: List<String>?) {
         data?.let { breedDetailAdapter.updateBreedImageList(it) }
+    }
+
+    override fun breedImageItemClick(breedImageUrl: String) {
+        viewModel.breedImageClicked(breedImageUrl)
     }
 
 }

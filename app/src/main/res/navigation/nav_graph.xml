@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/breedListFragment">
 
     <fragment
         android:id="@+id/breedListFragment"
         android:name="com.example.android_chipsampleapp.ui.breed_list.BreedListFragment"
-        android:label="Breeds List">
+        android:label="Breeds List"
+        tools:layout="@layout/fragment_breed_list">
         <action
             android:id="@+id/action_breedListFragment_to_breedDetailFragment"
             app:destination="@id/breedDetailFragment" />
@@ -15,7 +17,8 @@
     <fragment
         android:id="@+id/breedDetailFragment"
         android:name="com.example.android_chipsampleapp.ui.breed_detail.BreedDetailFragment"
-        android:label="{title}">
+        android:label="{title}"
+        tools:layout="@layout/fragment_breed_detail">
         <argument
             android:name="breedName"
             android:defaultValue=""
@@ -28,5 +31,19 @@
             android:name="title"
             android:defaultValue="Breed Images"
             app:argType="string" />
+        <action
+            android:id="@+id/action_breedDetailFragment_to_standAloneImageFragment"
+            app:destination="@id/standAloneImageFragment" />
     </fragment>
+
+    <dialog
+        android:id="@+id/standAloneImageFragment"
+        android:name="com.example.android_chipsampleapp.ui.standalone_image.StandaloneImageDialogFragment"
+        android:label="Breed Image"
+        tools:layout="@layout/fragment_dialog_standalone_image">
+        <argument
+            android:name="imageUrl"
+            android:defaultValue=""
+            app:argType="string"/>
+    </dialog>
 </navigation>

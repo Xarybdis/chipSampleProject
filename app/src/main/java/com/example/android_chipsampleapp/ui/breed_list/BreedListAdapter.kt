@@ -33,20 +33,20 @@ class BreedListAdapter(private val listener: OnItemClickListener) : RecyclerView
 
     inner class BreedListViewHolder(private val itemBinding: ListItemBreedBinding) : RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(breedItem: Pair<String, List<String>>) {
-            itemBinding.breedName.text = breedItem.first
-
             itemBinding.apply {
+                breedName.text = breedItem.first
+
                 root.setOnClickListener {
                     if (adapterPosition != RecyclerView.NO_POSITION) {
                         listener.breedItemClickListener(breedItem.first)
                     }
                 }
-            }
 
-            if (breedItem.second.isNotEmpty()) {
-                val subBreedAdapter = BreedSubListAdapter(breedItem.first, breedItem.second, listener)
-                itemBinding.recyclerviewSubBreedList.layoutManager = LinearLayoutManager(itemView.context)
-                itemBinding.recyclerviewSubBreedList.adapter = subBreedAdapter
+                if (breedItem.second.isNotEmpty()) {
+                    val subBreedAdapter = BreedSubListAdapter(breedItem.first, breedItem.second, listener)
+                    recyclerviewSubBreedList.layoutManager = LinearLayoutManager(itemView.context)
+                    recyclerviewSubBreedList.adapter = subBreedAdapter
+                }
             }
         }
     }
