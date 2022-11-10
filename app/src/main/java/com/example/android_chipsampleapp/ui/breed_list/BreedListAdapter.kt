@@ -8,21 +8,26 @@ import com.example.android_chipsampleapp.databinding.ListItemBreedBinding
 
 
 class BreedListAdapter(private val listener: OnItemClickListener) : RecyclerView.Adapter<BreedListAdapter.BreedListViewHolder>() {
-    private var breedTypeList = mutableListOf<Pair<String, List<String>>>()
+    private var breedNameList = mutableListOf<Pair<String, List<String>>>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreedListViewHolder =
         BreedListViewHolder(ListItemBreedBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
 
     override fun onBindViewHolder(holder: BreedListViewHolder, position: Int) {
-        holder.bind(breedTypeList[position])
+        holder.bind(breedNameList[position])
     }
 
-    override fun getItemCount(): Int = breedTypeList.size
+    override fun getItemCount(): Int = breedNameList.size
 
     fun updateBreedList(list: List<Pair<String, List<String>>>) {
-        breedTypeList.clear()
-        breedTypeList.addAll(list)
+        breedNameList.clear()
+        breedNameList.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    fun updateListAccordingToSearch(searchValue: String) {
+
         notifyDataSetChanged()
     }
 
