@@ -15,12 +15,3 @@ data class BreedListModel(
     val breedType: Map<String, List<String>>,
     val status: String
 )
-
-data class BreedImagesModel(
-    val breedImages: List<String>
-)
-
-data class RandomBreedModel(
-    val breedImages: String,
-)
-
