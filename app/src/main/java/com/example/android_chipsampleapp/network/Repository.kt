@@ -2,7 +2,6 @@ package com.example.android_chipsampleapp.network
 
 import com.example.android_chipsampleapp.network.models.BaseModel
 import com.example.android_chipsampleapp.network.models.BreedListModel
-import com.example.android_chipsampleapp.network.models.RandomBreedModel
 
 class Repository(private val api: Api) {
 
@@ -12,5 +11,5 @@ class Repository(private val api: Api) {
 
     suspend fun fetchImagesBySubBreed(breedName: String, subBreedName: String): BaseModel<List<String>> = api.listImagesBySubBreed(breedName, subBreedName)
 
-    suspend fun fetchRandomBreedImage(): RandomBreedModel = api.getRandomImage()
+    suspend fun fetchRandomBreedImage(): BaseModel<String> = api.getRandomImage()
 }

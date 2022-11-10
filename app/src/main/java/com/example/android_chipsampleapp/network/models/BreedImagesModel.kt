@@ -4,7 +4,8 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class BaseModel<T>(
-    val message: T,
+    @SerializedName("message")
+    val data: T,
     val status: String
 )
 

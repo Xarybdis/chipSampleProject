@@ -58,6 +58,10 @@ class BreedListFragment : Fragment(R.layout.fragment_breed_list), BreedListAdapt
                 layoutManager = LinearLayoutManager(requireContext())
                 setHasFixedSize(true)
             }
+
+            fabRandomPhoto.setOnClickListener {
+                fetchRandomImage()
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
@@ -71,6 +75,32 @@ class BreedListFragment : Fragment(R.layout.fragment_breed_list), BreedListAdapt
                                 if (event.subBreedName.isNotEmpty()) "${event.breedName.replaceFirstChar { it.uppercaseChar() }} > ${event.subBreedName.replaceFirstChar { it.uppercaseChar() }} "
                                 else event.breedName.replaceFirstChar { it.uppercaseChar() })
                         findNavController().navigate(action)
+                    }
+                    is BreedListViewModel.BreedListEvent.NavigateToBreedStandaloneImageScreen -> {
+                        val action = BreedListFragmentDirections.actionBreedListFragmentToStandAloneImageFragment(event.breedImageUrl)
+                        findNavController().navigate(action)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun fetchRandomImage() {
+        viewModel.onRandomPhotoButtonClicked().observe(viewLifecycleOwner) {
+            it.let { response ->
+                when (response) {
+                    is Response.Success -> {
+                        stateProgressLoading(false, binding.loadingView.root, binding.recyclerviewList)
+                        response.data?.let { imageUrl -> viewModel.continueStandAloneImageScreen(imageUrl) }
+                    }
+                    is Response.Error -> {
+                        Timber.d("An error occurred during fetchBreedsList()")
+                        Snackbar.make(requireView(), "An error occurred. Check your internet.", Snackbar.LENGTH_INDEFINITE).setAction("TRY AGAIN") {
+                            fetchRandomImage()
+                        }.show()
+                    }
+                    is Response.Loading -> {
+                        stateProgressLoading(true, binding.loadingView.root, binding.recyclerviewList)
                     }
                 }
             }

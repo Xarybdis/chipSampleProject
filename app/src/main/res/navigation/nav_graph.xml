@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_breedListFragment_to_breedDetailFragment"
             app:destination="@id/breedDetailFragment" />
+        <action
+            android:id="@+id/action_breedListFragment_to_standAloneImageFragment"
+            app:destination="@id/standAloneImageFragment" />
     </fragment>
     <fragment
         android:id="@+id/breedDetailFragment"

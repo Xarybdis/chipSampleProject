@@ -34,10 +34,25 @@ class BreedListViewModel(private val repository: Repository) : ViewModel() {
         breedEventChannel.send(BreedListEvent.NavigateToBreedDetailScreen(breedName, subBreedName))
     }
 
+    fun onRandomPhotoButtonClicked() = liveData(Dispatchers.IO) {
+        emit(Response.Loading(data = null))
+        try {
+            val response = repository.fetchRandomBreedImage()
+            emit(Response.Success(data = response.data, status = response.status))
+        } catch (exception: Exception) {
+            emit(Response.Error(data = null, status = exception.localizedMessage ?: "Error occurred."))
+        }
+    }
+
+    fun continueStandAloneImageScreen(breedImageUrl: String) = viewModelScope.launch {
+        breedEventChannel.send(BreedListEvent.NavigateToBreedStandaloneImageScreen(breedImageUrl))
+    }
+
     private val breedEventChannel = Channel<BreedListEvent>()
     val breedEvent = breedEventChannel.receiveAsFlow()
 
     sealed class BreedListEvent {
         data class NavigateToBreedDetailScreen(val breedName: String, val subBreedName: String) : BreedListEvent()
+        data class NavigateToBreedStandaloneImageScreen(val breedImageUrl: String) : BreedListEvent()
     }
 }

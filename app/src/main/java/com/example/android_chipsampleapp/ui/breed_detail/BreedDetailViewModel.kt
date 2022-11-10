@@ -18,7 +18,7 @@ class BreedDetailViewModel(private val repository: Repository, val savedState: S
         emit(Response.Loading(data = null))
         try {
             val data = if (subBreedName.isEmpty()) repository.fetchImagesByBreed(breedName) else repository.fetchImagesBySubBreed(breedName, subBreedName)
-            emit(Response.Success(data = data.message, data.status))
+            emit(Response.Success(data = data.data, data.status))
         } catch (exception: Exception) {
             emit(Response.Error(data = null, status = exception.localizedMessage ?: "Error occurred."))
         }
