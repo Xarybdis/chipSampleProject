@@ -2,6 +2,7 @@ package com.example.android_chipsampleapp.di
 
 import com.example.android_chipsampleapp.network.Api
 import com.example.android_chipsampleapp.network.Repository
+import com.example.android_chipsampleapp.ui.breed_detail.BreedDetailViewModel
 import com.example.android_chipsampleapp.ui.breed_list.BreedListViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -59,4 +60,5 @@ val networkModule = module {
 val viewModelModule = module {
     single { Repository(get()) }
     viewModel { BreedListViewModel(get()) }
+    viewModel { BreedDetailViewModel(get(), get()) }
 }

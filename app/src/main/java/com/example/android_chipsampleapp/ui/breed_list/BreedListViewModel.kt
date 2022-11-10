@@ -20,24 +20,24 @@ class BreedListViewModel(private val repository: Repository) : ViewModel() {
             val data = convertedPairListFromMap(listOfBreeds.breedType)
             emit(Response.Success(data = data, status = listOfBreeds.status))
         } catch (exception: Exception) {
-            emit(Response.Error(data = null, status = exception.localizedMessage ?: "Error occured."))
+            emit(Response.Error(data = null, status = exception.localizedMessage ?: "Error occurred."))
         }
     }
 
     private fun convertedPairListFromMap(map: Map<String, List<String>>): List<Pair<String, List<String>>> = map.toList().map { Pair(it.first, it.second) }
 
     fun breedItemClicked(breedName: String) = viewModelScope.launch {
-        breedEventChannel.send(BreedListEvent.NavigateToBreedDetailScreen(breedName))
+        breedEventChannel.send(BreedListEvent.NavigateToBreedDetailScreen(breedName, ""))
     }
 
-    fun breedSubItemClicked(subBreedName: String) = viewModelScope.launch {
-        breedEventChannel.send(BreedListEvent.NavigateToBreedDetailScreen(subBreedName))
+    fun breedSubItemClicked(breedName: String, subBreedName: String) = viewModelScope.launch {
+        breedEventChannel.send(BreedListEvent.NavigateToBreedDetailScreen(breedName, subBreedName))
     }
 
     private val breedEventChannel = Channel<BreedListEvent>()
     val breedEvent = breedEventChannel.receiveAsFlow()
 
     sealed class BreedListEvent {
-        data class NavigateToBreedDetailScreen(val breedName: String) : BreedListEvent()
+        data class NavigateToBreedDetailScreen(val breedName: String, val subBreedName: String) : BreedListEvent()
     }
 }

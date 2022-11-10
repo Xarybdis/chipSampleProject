@@ -21,6 +21,10 @@
             android:defaultValue=""
             app:argType="string" />
         <argument
+            android:name="subBreedName"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
             android:name="title"
             android:defaultValue="Breed Images"
             app:argType="string" />

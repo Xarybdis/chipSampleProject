@@ -3,7 +3,6 @@ package com.example.android_chipsampleapp.ui.breed_list
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,14 +21,14 @@ class BreedListFragment : Fragment(R.layout.fragment_breed_list), BreedListAdapt
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentBreedListBinding.bind(view)
-        setupViewsAndCalls(binding)
+        breedListAdapter = BreedListAdapter(this@BreedListFragment)
+        setupViewsAndCalls()
         fetchBreedsList()
     }
 
-    private fun setupViewsAndCalls(binding: FragmentBreedListBinding) {
+    private fun setupViewsAndCalls() {
         binding.apply {
             recyclerviewList.apply {
-                breedListAdapter = BreedListAdapter(this@BreedListFragment)
                 adapter = breedListAdapter
                 layoutManager = LinearLayoutManager(requireContext())
                 setHasFixedSize(true)
@@ -40,7 +39,12 @@ class BreedListFragment : Fragment(R.layout.fragment_breed_list), BreedListAdapt
             viewModel.breedEvent.collect { event ->
                 when (event) {
                     is BreedListViewModel.BreedListEvent.NavigateToBreedDetailScreen -> {
-                        val action = BreedListFragmentDirections.actionBreedListFragmentToBreedDetailFragment(event.breedName, event.breedName.replaceFirstChar { it.uppercaseChar() })
+                        val action =
+                            BreedListFragmentDirections.actionBreedListFragmentToBreedDetailFragment(
+                                event.breedName,
+                                event.subBreedName,
+                                if (event.subBreedName.isNotEmpty()) "${event.breedName.replaceFirstChar { it.uppercaseChar() }} > ${event.subBreedName.replaceFirstChar { it.uppercaseChar() }} "
+                                else event.breedName.replaceFirstChar { it.uppercaseChar() })
                         findNavController().navigate(action)
                     }
                 }
@@ -50,11 +54,11 @@ class BreedListFragment : Fragment(R.layout.fragment_breed_list), BreedListAdapt
 
 
     private fun fetchBreedsList() {
-        viewModel.getListOfBreeds().observe(viewLifecycleOwner, Observer {
+        viewModel.getListOfBreeds().observe(viewLifecycleOwner) {
             it?.let { response ->
                 when (response) {
                     is Response.Success -> {
-                        updateRecyclerView(response.data)
+                        updateBreedListRecyclerView(response.data)
                     }
                     is Response.Error -> {
                         Timber.d("An error occurred during fetchBreedsList()")
@@ -62,10 +66,10 @@ class BreedListFragment : Fragment(R.layout.fragment_breed_list), BreedListAdapt
                     is Response.Loading -> Timber.d("ITS LOADINGGGGG")
                 }
             }
-        })
+        }
     }
 
-    private fun updateRecyclerView(data: List<Pair<String, List<String>>>?) {
+    private fun updateBreedListRecyclerView(data: List<Pair<String, List<String>>>?) {
         data?.let { breedListAdapter.updateBreedList(it) }
     }
 
@@ -73,7 +77,7 @@ class BreedListFragment : Fragment(R.layout.fragment_breed_list), BreedListAdapt
         viewModel.breedItemClicked(breedName)
     }
 
-    override fun subItemClickListener(subBreedName: String) {
-        viewModel.breedSubItemClicked(subBreedName)
+    override fun subItemClickListener(breedName: String, subBreedName: String) {
+        viewModel.breedSubItemClicked(breedName, subBreedName)
     }
 }

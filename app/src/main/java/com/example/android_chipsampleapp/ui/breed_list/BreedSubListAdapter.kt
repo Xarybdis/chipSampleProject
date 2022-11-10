@@ -7,7 +7,9 @@ import com.example.android_chipsampleapp.databinding.ListItemSubBreedBinding
 
 
 class BreedSubListAdapter(
-    private var breedSubTypeList: List<String>, private val subListener: BreedListAdapter.OnItemClickListener
+    private var breedSupType: String,
+    private var breedSubTypeList: List<String>,
+    private val subListener: BreedListAdapter.OnItemClickListener
 ) : RecyclerView.Adapter<BreedSubListAdapter.BreedSubListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreedSubListViewHolder =
@@ -26,7 +28,7 @@ class BreedSubListAdapter(
             itemBinding.apply {
                 root.setOnClickListener {
                     if (adapterPosition != RecyclerView.NO_POSITION) {
-                        subListener.subItemClickListener(subBreedName)
+                        subListener.subItemClickListener(breedSupType, subBreedName)
                     }
                 }
             }
