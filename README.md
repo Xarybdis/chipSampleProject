@@ -1,5 +1,5 @@
 # chipSampleProject
-![chip_sample_gif](https://user-images.githubusercontent.com/38101330/201232995-e40bb316-9b9c-4298-9237-3fc0701c7300.jpg)
+![20221111_013057](https://user-images.githubusercontent.com/38101330/201234466-2f8f7c0e-fadd-454b-b8f2-66ea4c9ef3a7.gif)
 
 ## Insight
 This is simple demo app to send requests to fetch dog pics from https://dog.ceo/dog-api/
